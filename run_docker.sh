@@ -18,7 +18,10 @@ DOCKER_ENV_VARS="
 --env="XAUTHORITY=/home/docker/.Xauthority" \
 --env="QT_X11_NO_MITSHM=1" \
 "
-DOCKER_ARGS=${DOCKER_VOLUMES}" "${DOCKER_ENV_VARS}
+DOCKER_EXPOSE_PORTS="
+--expose="22" \
+"
+DOCKER_ARGS=${DOCKER_VOLUMES}" "${DOCKER_ENV_VARS}" "${DOCKER_EXPOSE_PORTS}
 
 # Run the command
-docker run --rm -it --gpus="all" --ipc=host --device=/dev/dri:/dev/dri --name="$2" $DOCKER_ARGS $1 bash -c "$3"
+docker run -h $1 --rm -it --gpus="all" --ipc=host --device=/dev/dri:/dev/dri --name="$2" $DOCKER_ARGS $1 bash -c "$3"
