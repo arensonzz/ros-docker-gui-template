@@ -1,0 +1,11 @@
+* How to use?
+  ~ Add your CPP code to the `package/src` folder.
+  ~ Modify `package/CMakeLists.txt` and `package/package.xml` to suit your project's needs.
+  ~ Modify `Dockerfile` to suit your project's needs. Install needed programs and clone needed libraries.
+  ~ Modify `entrypoint.sh`, source workspaces and export environment variables here. 
+  ~ Build Docker image that contains base environment files.
+    `docker build -t "ros-hello-world" .`
+  ~ Run Docker container using the bash script `run_docker.sh`
+    `./run_docker.sh <image_name> <container name> <commands>`
+  ~ Attach to the same container from another terminal if you need to.
+    `docker exec -it bash <container name>`
