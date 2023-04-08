@@ -13,7 +13,7 @@ then
     source ~/catkin_ws/devel/setup.bash
     echo "Sourced catkin_ws base workspace"
     ### Environment variables
-    # export TURTLEBOT3_MODEL=waffle_pi
+    export CMAKE_EXPORT_COMPILE_COMMANDS=1
 fi
 
 # Execute the command passed into this entrypoint
