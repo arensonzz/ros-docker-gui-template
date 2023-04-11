@@ -1,10 +1,10 @@
 FROM osrf/ros:noetic-desktop-full
 SHELL ["/bin/bash", "-c"]
 
-# Define which Neovim COC extensions should be installed.
+# Define which Neovim COC extensions should be installed
 ARG COC="coc-clangd coc-cmake coc-docker coc-git coc-json coc-pyright coc-snippets coc-vimlsp"
 
-# Install system wide packages
+# Install system wide packages (alphabetical order)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     bat \
     ccls \
@@ -28,12 +28,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     xauth \
     xclip
 
-# Install latest nodejs
+# Install latest nodejs (needed for Neovim)
 RUN curl -sL install-node.vercel.app/lts | bash -s  -- --yes
 
 # Install pip applications
 RUN pip3 install pynvim \
-    && pip3 install cmake-language-server
+    && pip3 install cmake-language-server \
+    && pip3 install autopep8 \
+    && pip3 install flake8
 
 # Cooperate NodeJS with Neovim
 RUN npm i -g neovim
@@ -48,10 +50,10 @@ RUN mkdir -p /nvim && cd /nvim \
 
 # Create user and add user to the sudoers group
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
-# Switch to created user
+# Switch to the created user
 USER docker
 
-# Install dotfiles
+# Install personal dotfiles (https://github.com/arensonzz/dotfiles)
 RUN cd ~ \
     && git init --bare $HOME/.dotfiles \
     && /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME config --local status.showUntrackedFiles no \
@@ -59,17 +61,20 @@ RUN cd ~ \
     && /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME fetch origin master \
     && /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME reset --hard origin/master
 
+
 # Install user packages
 #   tmux
 RUN git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && ~/.tmux/plugins/tpm/bin/install_plugins
-#   neovim
+#   neovim: install plugin manager, install plugins, install coc extensions
 RUN curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim \
     && nvim --headless +"PlugInstall --sync" +"qall" \
     && mkdir -p ~/.config/coc/extensions \
     && cd ~/.config/coc/extensions && npm install $COC --omit=dev
 
-# Install nvim-treesitter parsers defined in the require.setup, sleep is needed for sync operation
-RUN nvim --headless +'TSInstallSync!' +'sleep 20' +'qall'
+# Install nvim-treesitter parsers, sleep is needed for sync operation
+# Default parsers are defined in the plugins.vim file as follows:
+#   bash c cmake comment cpp dockerfile json lua make python regex vim vimdoc yaml
+RUN nvim --headless +"TSInstallSync!" +'sleep 20' +'qall'
 
 ### ROS
 # Create a Catkin workspace and clone repos
@@ -82,11 +87,13 @@ RUN source /opt/ros/noetic/setup.bash \
 # Build the Catkin workspace
 RUN source /opt/ros/noetic/setup.bash \
  && cd ~/catkin_ws \
- && catkin_make
+ && catkin_make -DCMAKE_EXPORT_COMPILE_COMMANDS=1
  
 # Set the working folder at startup
 WORKDIR /home/docker/catkin_ws
 
+# Copy LSP settings for Neovim
+COPY .vim/coc-settings.json /home/docker/.config/nvim/
 # Set up the entrypoint
 COPY ./entrypoint.sh /
 ENTRYPOINT [ "/entrypoint.sh" ]   

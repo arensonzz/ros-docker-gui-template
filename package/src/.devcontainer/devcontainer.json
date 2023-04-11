@@ -1,4 +1,0 @@
-{
-  "image": "ros-hello-world",
-  "forwardPorts": [3000],
-}
