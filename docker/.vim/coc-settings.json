@@ -1,0 +1,60 @@
+{
+  "languageserver": {
+    "ccls": {
+      "command": "ccls",
+      "filetypes": [ "c", "cc", "cpp", "c++", "objc", "objcpp" ],
+      "rootPatterns": [
+        ".ccls",
+        "build/compile_commands.json",
+        ".git/",
+        ".hg/"
+      ],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        },
+        "highlight": {
+          "lsRanges": true
+        },
+        "client": {
+          "snippetSupport": true
+        },
+        "compilationDatabaseDirectory": "build",
+        "clang": { 
+          "extraArgs": [ "-std=c++11", "-Wall" ] 
+        }
+      }
+    },
+  },
+  "suggest.completionItemKindLabels": {
+    "text": "t",
+    "method": "m",
+    "function": "f"
+  },
+  "suggest.autoTrigger": "always",
+  "suggest.minTriggerInputLength": 3,
+  "suggest.noselect": false,
+
+  "diagnostic.displayByAle": true,
+  "diagnostic.enable": false,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.messageTarget": "echo",
+  "diagnostic.signPriority": 9999999,
+
+  "python.linting.enabled": false,
+  "python.analysis.typeCheckingMode": "off",
+
+  "snippets.extends": {
+      "python": ["django"]
+  },
+  "snippets.userSnippetsDirectory": "~/.config/nvim/UltiSnips",
+  "snippets.ultisnips.directories": [
+    "UltiSnips"
+  ],
+  "snippets.loadFromExtensions": true,
+
+  "coc.preferences.extensionUpdateCheck": "weekly",
+
+  "cmake.lsp.enable": true,
+  "sql.database": "postgresql"
+}
