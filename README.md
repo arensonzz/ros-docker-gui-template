@@ -113,4 +113,4 @@ your liking.
 
 ## License
 
-Project Title is free software published under the MIT license. See [LICENSE](LICENSE) for details.
+ROS Docker GUI Template is free software published under the MIT license. See [LICENSE](LICENSE) for details.
