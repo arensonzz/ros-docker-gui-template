@@ -34,6 +34,7 @@ RUN curl -sL install-node.vercel.app/lts | bash -s  -- --yes
 # Install pip applications
 RUN pip3 install pynvim \
     && pip3 install cmake-language-server \
+    && pip3 install --upgrade attrs \
     && pip3 install autopep8 \
     && pip3 install flake8
 
@@ -80,6 +81,7 @@ RUN nvim --headless +"TSInstallSync!" +'sleep 20' +'qall'
 # Create a Catkin workspace and clone repos
 RUN source /opt/ros/noetic/setup.bash \
  && mkdir -p ~/catkin_ws/src \
+ && touch ~/catkin_ws/.ccls \
  && cd ~/catkin_ws/src \
  && catkin_init_workspace
  # && git clone -b noetic-devel https://github.com/ROBOTIS-GIT/turtlebot3.git \
