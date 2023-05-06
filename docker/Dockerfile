@@ -2,7 +2,7 @@ FROM osrf/ros:noetic-desktop-full
 SHELL ["/bin/bash", "-c"]
 
 # Define which Neovim COC extensions should be installed
-ARG COC="coc-clangd coc-cmake coc-docker coc-git coc-json coc-pyright coc-snippets coc-vimlsp"
+ARG COC="coc-cmake coc-docker coc-git coc-json coc-pyright coc-snippets coc-vimlsp"
 
 # Install system wide packages (alphabetical order)
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -96,6 +96,7 @@ WORKDIR /home/docker/catkin_ws
 
 # Copy LSP settings for Neovim
 COPY .vim/coc-settings.json /home/docker/.config/nvim/
+COPY .vim/plugins.vim /home/docker/.config/nvim/
 # Set up the entrypoint
 COPY ./entrypoint.sh /
 ENTRYPOINT [ "/entrypoint.sh" ]   
