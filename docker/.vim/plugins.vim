@@ -21,7 +21,7 @@ Plug 'nvim-tree/nvim-web-devicons' " optional, for file icons
 Plug 'nvim-tree/nvim-tree.lua' " tree-like file browser
 
 "   fzf
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " fuzzy file finder
+Plug 'junegunn/fzf', " fuzzy file finder
 Plug 'junegunn/fzf.vim'
 Plug 'stsewd/fzf-checkout.vim'
 

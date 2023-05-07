@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     clang-format \
     curl \
     fd-find \
-    fzf \
     git \
     grep \
     language-pack-en \
@@ -49,6 +48,7 @@ RUN mkdir -p /nvim && cd /nvim \
     && chmod +x /nvim/squashfs-root/usr/bin/nvim \
     && ln -s /nvim/squashfs-root/usr/bin/nvim /usr/local/bin
 
+
 # Create user and add user to the sudoers group
 RUN useradd -m docker && echo "docker:docker" | chpasswd && adduser docker sudo
 # Switch to the created user
@@ -62,6 +62,9 @@ RUN cd ~ \
     && /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME fetch origin master \
     && /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME reset --hard origin/master
 
+# Install fzf
+RUN git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf \
+    && yes | bash ~/.fzf/install
 
 # Install user packages
 #   tmux
