@@ -166,7 +166,7 @@ endfunction
 
 augroup enable_coc_diagnostic
     autocmd!
-    autocmd FileType typescript,sql,python,json call EnableCocDiagnosticBuffer()
+    autocmd FileType typescript,sql,python,json,c,cc,cpp,c++,cuda,objcpp call EnableCocDiagnosticBuffer()
 augroup end
 
 " python syntax

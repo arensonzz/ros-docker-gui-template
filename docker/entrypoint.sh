@@ -17,6 +17,7 @@ then
     echo 'Sourced catkin_ws base workspace'
     ### Environment variables
     export CMAKE_EXPORT_COMPILE_COMMANDS=1
+    export OPENCV_SAMPLES_DATA_PATH="/home/docker/catkin_ws/src/project/samples"
 fi
 
 # Launch new tmux session and attach to it
